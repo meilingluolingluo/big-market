@@ -142,11 +142,19 @@ public class StrategyArmoryDispatch implements IStrategyArmory, IStrategyDispatc
 
     @Override
     public Integer getRandomAwardId(Long strategyId) {
-        // 分布式部署下，不一定为当前应用做的策略装配。也就是值不一定会保存到本应用，而是分布式应用，所以需要从 Redis 中获取。
+        // Fetch the rate range from the repository
         int rateRange = repository.getRateRange(strategyId);
-        // 通过生成的随机值，获取概率值奖品查找表的结果
-        return repository.getStrategyAwardAssemble(String.valueOf(strategyId), secureRandom.nextInt(rateRange));
+
+        // Ensure that rateRange is valid (greater than zero)
+        if (rateRange > 0) {
+            // Generate a random number in the range and retrieve the award based on the strategy
+            return repository.getStrategyAwardAssemble(String.valueOf(strategyId), secureRandom.nextInt(rateRange));
+        } else {
+            // Handle the case where rateRange is zero or invalid
+            throw new IllegalStateException("Rate range must be greater than 0 for strategyId: " + strategyId);
+        }
     }
+
 
     @Override
     public Integer getRandomAwardId(Long strategyId, String ruleWeightValue) {

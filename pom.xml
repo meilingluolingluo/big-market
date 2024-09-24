@@ -13,6 +13,7 @@
         <module>big-market-trigger</module>
         <module>big-market-infrastructure</module>
         <module>big-market-types</module>
+        <module>big-market-api</module>
     </modules>
 
     <repositories>
@@ -123,6 +124,11 @@
                 <groupId>cn.bugstack.middleware</groupId>
                 <artifactId>db-router-spring-boot-starter</artifactId>
                 <version>1.0.2</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-amqp</artifactId>
+                <version>3.2.0</version>
             </dependency>
             <!-- 工程模块 -->
             <dependency>
